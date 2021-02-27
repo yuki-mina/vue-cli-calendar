@@ -5,7 +5,7 @@
     <div class="weekly-title">
         <div class="this-month">{{thisYear}}/{{thisMonth}}</div>
         
-        <!-- {{$data}} -->
+        {{$data}}
     </div>
     <weekly-com :thisWeek="getThisWeek[0]"/>
     <weekly-com :thisWeek="getThisWeek[1]"/>
