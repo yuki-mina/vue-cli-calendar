@@ -44,10 +44,15 @@ export default {
     thisMonth(){ return this.today.getMonth()+1; },
     date(){ return this.today.getDate(); },
     dayNum(){ return this.today.getDay(); },
-    thisMonday(){ 
-      var thisDate =this.date - this.dayNum + 1;
+    thisMonday:{ 
+      get: function(){var thisDate =this.date - this.dayNum + 1;
       var startDate = new Date(this.thisYear, this.thisMonth, thisDate).getDate();
       return  startDate;
+      },
+      set: function(thisMonday){
+        console.log(111);
+      }
+      
       },
     thisSunday(){ return this.thisMonday + 6; },
     getThisWeek(){
@@ -71,7 +76,7 @@ export default {
       this.thisWeek = [];
     },
     nextWeek: function(){
-       this.thisMon = this.thisMon+7;
+       this.thisMonday = this.thisMonday+7;
       this.thisWeek = [];
     }
   }
