@@ -24,9 +24,11 @@
         <hr class="center-line">
         <ul class="ul-schedule">
             <li v-for="(schedule, index) in schedules" :key="index">
-                <input type="checkbox" v-model="schedule.isPassed">
-                <span v-bind:class="{passed:schedule.isPassed}">{{schedule.item}}</span>
-                <button class="del-schedule btn-close"  aria-label="閉じる" v-on:click="deleteSchedule(index)"></button>
+                <input type="checkbox" v-model="schedule.isPassed" v-bind:id="schedule.id">
+                <label :for="schedule.id" v-bind:class="{passed:schedule.isPassed}">{{schedule.item}}</label>
+                <button class="del-schedule"  aria-label="閉じる" v-on:click="deleteSchedule(index)">
+                    <i class="fas fa-times"></i>
+                </button>
             </li>
         </ul>
     </div>
@@ -168,6 +170,12 @@ input[type="checkbox"]:checked + label:before {
   transform: rotate(45deg);
 }
 button.del-todo{
+    border:none;
+    background:#fff;
+    margin:0 0 0 3px;
+    padding:0;
+}
+button.del-schedule{
     border:none;
     background:#fff;
     margin:0 0 0 3px;
