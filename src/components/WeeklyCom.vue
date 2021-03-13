@@ -70,7 +70,7 @@ export default {
             if(this.newItem == '') return;
             if(this.schedules.length == 7) return;
             var schedule = {
-                id: this.schedules.length,
+                id: ++this.uniqueKey+10,
                 item: this.newItem,
                 isDone:false
             };
