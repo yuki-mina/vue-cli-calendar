@@ -14,8 +14,8 @@
         <hr class="top-line"> 
         <ul class="ul-todo">
             <li v-for="(todo, index) in todos" :key="index">
-                <input type="checkbox" v-model="todo.isDone" v-bind:id="todo.id">
-                <label :for="todo.id" v-bind:class="{done:todo.isDone}">{{todo.item}}</label>
+                <input type="checkbox" v-model="todo.isDone" v-bind:id="thisWeek.date+thisWeek.day+todo.id">
+                <label :for="thisWeek.date+thisWeek.day+todo.id" v-bind:class="{done:todo.isDone}">{{todo.item}}</label>
                 <button class="del-todo"  aria-label="閉じる" v-on:click="deleteTodo(index)">
                     <i class="fas fa-times"></i>
                 </button>
@@ -24,8 +24,8 @@
         <hr class="center-line">
         <ul class="ul-schedule">
             <li v-for="(schedule, index) in schedules" :key="index">
-                <input type="checkbox" v-model="schedule.isPassed" v-bind:id="schedule.id">
-                <label :for="schedule.id" v-bind:class="{passed:schedule.isPassed}">{{schedule.item}}</label>
+                <input type="checkbox" v-model="schedule.isPassed" v-bind:id="thisWeek.date+thisWeek.day+schedule.id">
+                <label :for="thisWeek.date+thisWeek.day+schedule.id" v-bind:class="{passed:schedule.isPassed}">{{schedule.item}}</label>
                 <button class="del-schedule"  aria-label="閉じる" v-on:click="deleteSchedule(index)">
                     <i class="fas fa-times"></i>
                 </button>
@@ -132,6 +132,7 @@ li > label.done{
 }
 li > label.passed{
     text-decoration: line-through;
+    text-decoration-color:rgb(230, 136, 136);
     color:#adacad;
 }
 input[type="text"]{
