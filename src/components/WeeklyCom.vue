@@ -5,16 +5,20 @@
             <span class="day">({{thisWeek.day}})</span>
         </div>
         <form v-on:submit.prevent>
-        <input type="text" v-model="newItem" maxlength="15">
-        <button class="add-todo" v-on:click="addList">T</button>
-        <button class="add-schedule" v-on:click="addSchedule">S</button>
+        <input type="text" v-model="newItem" maxlength="14">
+        <div>
+            <button class="add-todo btn btn-warning" v-on:click="addList">Todo</button>
+            <button class="add-schedule btn btn-success" v-on:click="addSchedule">Schedule</button>
+        </div>
         </form>
-        <hr> 
+        <hr class="top-line"> 
         <ul class="ul-todo">
             <li v-for="(todo, index) in todos" :key="index">
-                <input type="checkbox" v-model="todo.isDone">
-                <span v-bind:class="{done:todo.isDone}">{{todo.item}}</span>
-                <button class="del-todo" v-on:click="deleteTodo(index)">d</button>
+                <input type="checkbox" v-model="todo.isDone" v-bind:id="todo.id">
+                <label :for="todo.id" v-bind:class="{done:todo.isDone}">{{todo.item}}</label>
+                <button class="del-todo"  aria-label="閉じる" v-on:click="deleteTodo(index)">
+                    <i class="fas fa-times"></i>
+                </button>
             </li>
         </ul>
         <hr class="center-line">
@@ -22,7 +26,7 @@
             <li v-for="(schedule, index) in schedules" :key="index">
                 <input type="checkbox" v-model="schedule.isPassed">
                 <span v-bind:class="{passed:schedule.isPassed}">{{schedule.item}}</span>
-                <button class="del-schedule" v-on:click="deleteSchedule(index)">d</button>
+                <button class="del-schedule btn-close"  aria-label="閉じる" v-on:click="deleteSchedule(index)"></button>
             </li>
         </ul>
     </div>
@@ -41,7 +45,8 @@ export default {
         return{
             newItem:'',
             todos:[],
-            schedules:[]
+            schedules:[],
+            uniqueKey: 0,
         }
     },
     methods: {
@@ -49,6 +54,7 @@ export default {
             if(this.newItem == '') return;
             if(this.todos.length == 7) return;
             var todo = {
+                id: ++this.uniqueKey,
                 item: this.newItem,
                 isDone:false
             };
@@ -62,6 +68,7 @@ export default {
             if(this.newItem == '') return;
             if(this.schedules.length == 7) return;
             var schedule = {
+                id: this.schedules.length,
                 item: this.newItem,
                 isDone:false
             };
@@ -86,7 +93,7 @@ export default {
     font-size: 15px;
 }
 form{
-    height:31px;
+    height:36px;
 }
 ul.ul-todo {
     list-style: none;
@@ -95,10 +102,9 @@ ul.ul-todo {
     margin:0 0 0 20px;
     height:128px;
     position:relative;
-    top:1px;
+    top:10px;
 }
 ul.ul-schedule{
-
     list-style: none;
     text-align: left;
     padding:0;
@@ -109,40 +115,85 @@ ul.ul-schedule{
 }
 li{
     height:17px;
-    font-size:13px;
+    position:relative;
 }
-li > span.done{
-    text-decoration: line-through;
+li > label{
+    font-family: none;
+    margin-left:5px;
+    position:relative;
+    top: -2px;
 }
-li > span.passed{
+li > label.done{
     text-decoration: line-through;
+    text-decoration-color:rgb(230, 136, 136);
+    color:#adacad;
+}
+li > label.passed{
+    text-decoration: line-through;
+    color:#adacad;
 }
 input[type="text"]{
     width:70%;
     height:20px;
 }
-input[type="checkbox"]{
-    margin-right:5px;
+input[type=checkbox]{
+    display:none;
 }
-button.del-todo,button.del-schedule{
-    width:20px;
-    height:15px;
-    margin-left:5px;
+input[type="checkbox"] + label:before {
+  content: '';
+  display: block;
+  width: 15px;
+  height: 15px;
+  border: 1px solid #101111;
+  display: inline-block;
+  margin-right:8px;
+  /* left: 0; */
+  /* top: 0; */
+  opacity: .6;
+  -webkit-transition: all .12s, border-color .08s;
+  transition: all .12s, border-color .08s;
+}
+
+input[type="checkbox"]:checked + label:before {
+  width: 5px;
+  /* top: -5px;
+  left: 5px; */
+  border-radius: 0;
+  opacity: 1;
+  border-top-color: transparent;
+  border-left-color: transparent;
+  border-bottom-color: #adacad;
+  border-right-color: #adacad;
+  -webkit-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+button.del-todo{
+    border:none;
+    background:#fff;
+    margin:0 0 0 3px;
+    padding:0;
 }
 button.add-todo,button.add-schedule{
-    width:10%;
-    height:20px;
+    height:18px;
+    line-height: 0;
 }
 button{
-    font: 400 13.3333px Arial;
-    padding: 1px 2px;
+   margin-left:5px;
+}
+.fa-times{
+    color:rgb(230, 136, 136);
 }
 hr{
     margin:8px 0;
 }
 hr.center-line{
     position:relative;
-    top:0px;
+    top:5px;
+    margin:4px 0;
+}
+hr.top-line{
+    position:relative;
+    top:10px;
     margin:4px 0;
 }
 </style>
