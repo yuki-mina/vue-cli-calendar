@@ -7,8 +7,8 @@
         <form v-on:submit.prevent>
         <input type="text" v-model="newItem" maxlength="14">
         <div>
-            <button class="add-todo btn btn-warning" v-on:click="addList">Todo</button>
-            <button class="add-schedule btn btn-success" v-on:click="addSchedule">Schedule</button>
+            <button type="button" class="add-todo btn btn-warning" v-on:click="addList">Todo</button>
+            <button type="button" class="add-schedule btn btn-success" v-on:click="addSchedule">Schedule</button>
         </div>
         </form>
         <hr class="top-line"> 
@@ -120,20 +120,36 @@ li{
     position:relative;
 }
 li > label{
+    line-height:0.3;
     font-family: none;
     margin-left:5px;
     position:relative;
     top: -2px;
 }
-li > label.done{
-    text-decoration: line-through;
-    text-decoration-color:rgb(230, 136, 136);
-    color:#adacad;
+ul.ul-todo >li > label{
+    font-size: 16px;
+    background: linear-gradient(transparent 50%, #fcd358 50%);
 }
-li > label.passed{
+ul.ul-schedule >li > label{
+    font-size: 16px;
+    background: linear-gradient(transparent 50%, #abd6c3 50%);
+}
+
+ul.ul-todo > li > label.done{
+    font-size: 13px;
     text-decoration: line-through;
-    text-decoration-color:rgb(230, 136, 136);
+    text-decoration-color:#adacad;
+    text-decoration-thickness: 1px;
     color:#adacad;
+    background: none;
+}
+ul.ul-schedule > li > label.passed{
+    font-size: 13px;
+    text-decoration: line-through;
+    text-decoration-color:#adacad;
+    text-decoration-thickness: 1px;
+    color:#adacad;
+    background: none;
 }
 input[type="text"]{
     width:70%;
@@ -150,17 +166,24 @@ input[type="checkbox"] + label:before {
   border: 1px solid #101111;
   display: inline-block;
   margin-right:8px;
-  /* left: 0; */
-  /* top: 0; */
   opacity: .6;
   -webkit-transition: all .12s, border-color .08s;
   transition: all .12s, border-color .08s;
 }
 
-input[type="checkbox"]:checked + label:before {
+ul.ul-todo >li > input[type="checkbox"]:checked + label:before {
   width: 5px;
-  /* top: -5px;
-  left: 5px; */
+  border-radius: 0;
+  opacity: 1;
+  border-top-color: transparent;
+  border-left-color: transparent;
+  border-bottom-color: #adacad;
+  border-right-color: #adacad;
+  -webkit-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+ul.ul-schedule >li > input[type="checkbox"]:checked + label:before {
+  width: 5px;
   border-radius: 0;
   opacity: 1;
   border-top-color: transparent;
@@ -190,7 +213,7 @@ button{
    margin-left:5px;
 }
 .fa-times{
-    color:rgb(230, 136, 136);
+    color:rgb(209, 179, 179);
 }
 hr{
     margin:8px 0;
