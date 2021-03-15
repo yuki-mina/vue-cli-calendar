@@ -1,5 +1,14 @@
 <template>
     <div id="weekly-com" class="weekly-com">
+         <Modal v-on:close="closeModal" v-if="modal">
+              <!-- default スロットコンテンツ -->
+      <p>Todo or Schedule</p>
+      <template slot="footer">
+        <button class="add-todo btn btn-warning" v-on:click="addList">Todo</button>
+        <button class="add-schedule btn btn-success" v-on:click="addSchedule">Schedule</button>
+      </template>
+      <!-- /footer -->
+    </Modal>
         <div>
             {{thisWeek.date}}
             <span class="day">({{thisWeek.day}})</span>
@@ -7,15 +16,16 @@
         <form v-on:submit.prevent>
         <input type="text" v-model="newItem" maxlength="14">
         <div>
-            <button type="button" class="add-todo btn btn-warning" v-on:click="addList">Todo</button>
-            <button type="button" class="add-schedule btn btn-success" v-on:click="addSchedule">Schedule</button>
+            <button class="modal-show" @click="openModal" style="visibility:hidden"></button>
+            <button class="add-todo btn btn-warning" v-on:click="addList">Todo</button>
+            <button class="add-schedule btn btn-success" v-on:click="addSchedule">Schedule</button>
         </div>
         </form>
         <hr class="top-line"> 
         <ul class="ul-todo">
             <li v-for="(todo, index) in todos" :key="index">
-                <input type="checkbox" v-model="todo.isDone" v-bind:id="thisWeek.date+thisWeek.day+todo.id">
-                <label :for="thisWeek.date+thisWeek.day+todo.id" v-bind:class="{done:todo.isDone}">{{todo.item}}</label>
+                <input type="checkbox" v-model="todo.isDone" v-bind:id="thisWeek.ymd+todo.id">
+                <label :for="thisWeek.ymd+todo.id" v-bind:class="{done:todo.isDone}">{{todo.item}}</label>
                 <button class="del-todo"  aria-label="閉じる" v-on:click="deleteTodo(index)">
                     <i class="fas fa-times"></i>
                 </button>
@@ -24,8 +34,8 @@
         <hr class="center-line">
         <ul class="ul-schedule">
             <li v-for="(schedule, index) in schedules" :key="index">
-                <input type="checkbox" v-model="schedule.isPassed" v-bind:id="thisWeek.date+thisWeek.day+schedule.id">
-                <label :for="thisWeek.date+thisWeek.day+schedule.id" v-bind:class="{passed:schedule.isPassed}">{{schedule.item}}</label>
+                <input type="checkbox" v-model="schedule.isPassed" v-bind:id="thisWeek.ymd+schedule.id">
+                <label :for="thisWeek.ymd+schedule.id" v-bind:class="{passed:schedule.isPassed}">{{schedule.item}}</label>
                 <button class="del-schedule"  aria-label="閉じる" v-on:click="deleteSchedule(index)">
                     <i class="fas fa-times"></i>
                 </button>
@@ -35,7 +45,11 @@
 </template>
 
 <script>
+import Modal from './Modal.vue'
 export default {
+    components:{
+        Modal
+    },
     props: {
         thisWeek:{
             ymd: String,
@@ -49,6 +63,8 @@ export default {
             todos:[],
             schedules:[],
             uniqueKey: 0,
+            modal: false,
+            message: ''
         }
     },
     watch:{
@@ -80,6 +96,7 @@ export default {
             };
             this.todos.push(todo);
             this.newItem = '';
+            this.closeModal();
         },
         deleteTodo: function(index){
             this.todos.splice(index,1);
@@ -94,10 +111,19 @@ export default {
             };
             this.schedules.push(schedule);
             this.newItem = '';
+            this.closeModal();
         },
         deleteSchedule: function(index){
             this.schedules.splice(index,1);
-        }
+        },
+        openModal() {
+            if(this.newItem == '') return;
+            if(this.todos.length == 7) return;
+            this.modal = true;
+        },
+        closeModal() {
+        this.modal = false
+        },
     }
 }
 </script>
