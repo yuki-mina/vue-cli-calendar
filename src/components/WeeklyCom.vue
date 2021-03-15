@@ -38,7 +38,7 @@
 export default {
     props: {
         thisWeek:{
-            date: Number,
+            ymd: String,
             isToday: Boolean,
             day: String
         }
@@ -50,6 +50,24 @@ export default {
             schedules:[],
             uniqueKey: 0,
         }
+    },
+    watch:{
+        todos: {
+            handler: function(){
+                localStorage.setItem(`${this.thisWeek.ymd}todos`,JSON.stringify(this.todos));
+
+            },
+            deep:true
+        },
+        schedules:{
+            handler: function(){
+                localStorage.setItem(`${this.thisWeek.ymd}schedules`,JSON.stringify(this.schedules))
+            }
+        }
+    },
+    mounted: function(){
+        this.todos = JSON.parse(localStorage.getItem(`${this.thisWeek.ymd}todos`)) || [];
+        this.schedules = JSON.parse(localStorage.getItem(`${this.thisWeek.ymd}schedules`)) || [];
     },
     methods: {
         addList: function(){

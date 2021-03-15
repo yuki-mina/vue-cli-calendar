@@ -59,6 +59,7 @@ export default {
       var wd =['日','月','火','水','木','金','土'];
       for(var i=0; i<7; i++){
         var thisDay = {
+          ymd: `${this.thisYear}/${this.thisMonth}/${this.thisMonday+i}`,
           date: this.thisMonday+i,
           isToday:false,
           day: wd[i+1]
