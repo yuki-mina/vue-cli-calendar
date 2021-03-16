@@ -31,18 +31,19 @@
 
   .modal-window {
     background: #fff;
-    border-radius: 4px;
     overflow: hidden;
   }
 
   .modal-content {
     padding: 10px 20px;
+    border-radius: 0;
   }
 
   .modal-footer {
     background: #ccc;
     padding: 10px;
     text-align: right;
+    border-radius: 0;
   }
 
 .modal-enter-active, .modal-leave-active {

@@ -4,8 +4,6 @@
     <div class="next" v-on:click="nextWeek">&raquo;</div>
     <div class="weekly-title">
         <div class="this-month">{{thisYear}}/{{thisMonth}}</div>
-        
-        {{$data}}
     </div>
     <weekly-com :thisWeek="getThisWeek[0]"/>
     <weekly-com :thisWeek="getThisWeek[1]"/>
@@ -93,6 +91,7 @@ export default {
     border: 1px solid #363536;
     height:350px;
     width:320px;
+    background:rgba(110, 109, 109, 0.1);
 }
 .this-month{
   font: 3em sans-serif;

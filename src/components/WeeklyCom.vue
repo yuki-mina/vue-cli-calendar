@@ -4,41 +4,47 @@
               <!-- default スロットコンテンツ -->
       <p>Todo or Schedule</p>
       <template slot="footer">
-        <button class="add-todo btn btn-warning" v-on:click="addList">Todo</button>
-        <button class="add-schedule btn btn-success" v-on:click="addSchedule">Schedule</button>
+        <button class="modal-add-todo btn btn-warning" v-on:click="addList" focus>Todo</button>
+        <button class="modal-add-schedule btn btn-success" v-on:click="addSchedule">Schedule</button>
       </template>
       <!-- /footer -->
     </Modal>
-        <div>
-            {{thisWeek.date}}
-            <span class="day">({{thisWeek.day}})</span>
-        </div>
-        <form v-on:submit.prevent>
-        <input type="text" v-model="newItem" maxlength="14">
-        <div>
-            <button class="modal-show" @click="openModal" style="visibility:hidden"></button>
-            <button class="add-todo btn btn-warning" v-on:click="addList">Todo</button>
-            <button class="add-schedule btn btn-success" v-on:click="addSchedule">Schedule</button>
-        </div>
-        </form>
-        <hr class="top-line"> 
+        <div class="header-color">
+            <div>
+                {{thisWeek.date}}
+                <span class="day">({{thisWeek.day}})</span>
+            </div>
+            <form v-on:submit.prevent>
+            <input type="text" v-model="newItem" maxlength="14">
+            <div>
+                <button class="modal-show" @click="openModal" style="visibility:hidden"></button>
+                <button class="add-todo btn btn-warning" v-on:click="addList">Todo</button>
+                <button class="add-schedule btn btn-success" v-on:click="addSchedule">Schedule</button>
+            </div>
+            </form>
+            </div>
+        <!-- <hr class="top-line">  -->
         <ul class="ul-todo">
             <li v-for="(todo, index) in todos" :key="index">
-                <input type="checkbox" v-model="todo.isDone" v-bind:id="thisWeek.ymd+todo.id">
-                <label :for="thisWeek.ymd+todo.id" v-bind:class="{done:todo.isDone}">{{todo.item}}</label>
-                <button class="del-todo"  aria-label="閉じる" v-on:click="deleteTodo(index)">
-                    <i class="fas fa-times"></i>
-                </button>
+                <span class="p-todo">
+                    <input type="checkbox" v-model="todo.isDone" v-bind:id="thisWeek.ymd+todo.id+'todo'">
+                    <label :for="thisWeek.ymd+todo.id+'todo'" v-bind:class="{done:todo.isDone}">{{todo.item}}</label>
+                    <button class="del-todo"  aria-label="閉じる" v-on:click="deleteTodo(index)">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </span>
             </li>
         </ul>
         <hr class="center-line">
         <ul class="ul-schedule">
             <li v-for="(schedule, index) in schedules" :key="index">
-                <input type="checkbox" v-model="schedule.isPassed" v-bind:id="thisWeek.ymd+schedule.id">
-                <label :for="thisWeek.ymd+schedule.id" v-bind:class="{passed:schedule.isPassed}">{{schedule.item}}</label>
-                <button class="del-schedule"  aria-label="閉じる" v-on:click="deleteSchedule(index)">
-                    <i class="fas fa-times"></i>
-                </button>
+                <span class="p-schedule">
+                    <input type="checkbox" v-model="schedule.isPassed" v-bind:id="thisWeek.ymd+schedule.id+'schedule'">
+                    <label :for="thisWeek.ymd+schedule.id+'schedule'" v-bind:class="{passed:schedule.isPassed}">{{schedule.item}}</label>
+                    <button class="del-schedule"  aria-label="閉じる" v-on:click="deleteSchedule(index)">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </span>
             </li>
         </ul>
     </div>
@@ -105,9 +111,9 @@ export default {
             if(this.newItem == '') return;
             if(this.schedules.length == 7) return;
             var schedule = {
-                id: ++this.uniqueKey+10,
+                id: ++this.uniqueKey,
                 item: this.newItem,
-                isDone:false
+                isPassed:false
             };
             this.schedules.push(schedule);
             this.newItem = '';
@@ -135,6 +141,14 @@ export default {
     width:320px;
     height:350px;
 }
+.header-color{
+    position:relative;
+    left:-12px;
+    background:rgba(110, 109, 109, 0.2);
+    width: 320px;
+    height: 80px;
+    margin: 0;
+}
 .day{
     font-size: 15px;
 }
@@ -145,7 +159,7 @@ ul.ul-todo {
     list-style: none;
     text-align: left;
     padding:0;
-    margin:0 0 0 20px;
+    margin:0;
     height:128px;
     position:relative;
     top:10px;
@@ -154,7 +168,7 @@ ul.ul-schedule{
     list-style: none;
     text-align: left;
     padding:0;
-    margin:0 0 0 20px;
+    margin:0;
     height:130px;
     position:relative;
     top:6px;
@@ -163,38 +177,38 @@ li{
     height:17px;
     position:relative;
 }
-li > label{
+li > span > label{
     line-height:0.3;
     font-family: none;
     margin-left:5px;
     position:relative;
     top: -2px;
 }
-ul.ul-todo >li > label{
+ul.ul-todo >li > span > label{
     font-size: 16px;
-    background: linear-gradient(transparent 50%, #fcd358 50%);
+    background: linear-gradient(transparent 20%, #f3dd9c 20%);
 }
-ul.ul-schedule >li > label{
+ul.ul-schedule >li > span > label{
     font-size: 16px;
-    background: linear-gradient(transparent 50%, #abd6c3 50%);
+    /* background: linear-gradient(transparent 20%, #abd6c3 20%); */
 }
 
-ul.ul-todo > li > label.done{
-    font-size: 13px;
+ul.ul-todo > li > span > label.done{
+    font-size: 16px;
     text-decoration: line-through;
     text-decoration-color:#adacad;
     text-decoration-thickness: 1px;
     color:#adacad;
     background: none;
 }
-ul.ul-schedule > li > label.passed{
+/* ul.ul-schedule > li > label.passed{
     font-size: 13px;
     text-decoration: line-through;
     text-decoration-color:#adacad;
     text-decoration-thickness: 1px;
     color:#adacad;
     background: none;
-}
+} */
 input[type="text"]{
     width:70%;
     height:20px;
@@ -202,7 +216,7 @@ input[type="text"]{
 input[type=checkbox]{
     display:none;
 }
-input[type="checkbox"] + label:before {
+ul.ul-todo >li > span > input[type="checkbox"] + label:before {
   content: '';
   display: block;
   width: 15px;
@@ -214,8 +228,25 @@ input[type="checkbox"] + label:before {
   -webkit-transition: all .12s, border-color .08s;
   transition: all .12s, border-color .08s;
 }
+ul.ul-schedule >li > span > input[type="checkbox"] + label:before {
+  content: '';
+  display: block;
+  width: 15px;
+  height: 15px;
+  border: 1px solid #101111;
+  border-radius: 50%;
+  display: inline-block;
+  margin-right:8px;
+  opacity: .6;
+  -webkit-transition: all .12s, border-color .08s;
+  transition: all .12s, border-color .08s;
+  /* background: -webkit-radial-gradient(#25e28d,#fff);
+  background: -moz-radial-gradient(#25e28d,#fff);
+  background: radial-gradient(#25e28d,#fff); */
 
-ul.ul-todo >li > input[type="checkbox"]:checked + label:before {
+}
+
+ul.ul-todo >li > span > input[type="checkbox"]:checked + label:before {
   width: 5px;
   border-radius: 0;
   opacity: 1;
@@ -225,8 +256,9 @@ ul.ul-todo >li > input[type="checkbox"]:checked + label:before {
   border-right-color: #adacad;
   -webkit-transform: rotate(45deg);
   transform: rotate(45deg);
+  margin-right:18px;
 }
-ul.ul-schedule >li > input[type="checkbox"]:checked + label:before {
+/* ul.ul-schedule >li > input[type="checkbox"]:checked + label:before {
   width: 5px;
   border-radius: 0;
   opacity: 1;
@@ -236,18 +268,26 @@ ul.ul-schedule >li > input[type="checkbox"]:checked + label:before {
   border-right-color: #adacad;
   -webkit-transform: rotate(45deg);
   transform: rotate(45deg);
-}
+} */
 button.del-todo{
+    opacity: 0;
     border:none;
     background:#fff;
     margin:0 0 0 3px;
     padding:0;
 }
 button.del-schedule{
+    opacity: 0;
     border:none;
     background:#fff;
     margin:0 0 0 3px;
     padding:0;
+}
+span:hover button.del-todo,
+span:hover button.del-schedule{
+    opacity:1;
+    -webkit-transition:	all 0.2s ease;
+	transition:		all 0.2s ease;
 }
 button.add-todo,button.add-schedule{
     height:18px;
@@ -267,9 +307,9 @@ hr.center-line{
     top:5px;
     margin:4px 0;
 }
-hr.top-line{
+/* hr.top-line{
     position:relative;
     top:10px;
     margin:4px 0;
-}
+} */
 </style>
