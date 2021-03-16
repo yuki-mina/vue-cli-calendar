@@ -1,13 +1,11 @@
 <template>
     <div id="weekly-com" class="weekly-com">
          <Modal v-on:close="closeModal" v-if="modal">
-              <!-- default スロットコンテンツ -->
       <p>Todo or Schedule</p>
       <template slot="footer">
-        <button class="modal-add-todo btn btn-warning" v-on:click="addList" focus>Todo</button>
         <button class="modal-add-schedule btn btn-success" v-on:click="addSchedule">Schedule</button>
+        <button class="modal-add-todo btn btn-warning" v-on:click="addList" focus>Todo</button>
       </template>
-      <!-- /footer -->
     </Modal>
         <div class="header-color">
             <div>
@@ -17,31 +15,31 @@
             <form v-on:submit.prevent>
             <input type="text" v-model="newItem" maxlength="14">
             <div>
-                <button class="modal-show" @click="openModal" style="visibility:hidden"></button>
-                <button class="add-todo btn btn-warning" v-on:click="addList">Todo</button>
+                <button class="modal-show" @click="openModal" style="display:none;"></button>
                 <button class="add-schedule btn btn-success" v-on:click="addSchedule">Schedule</button>
+                <button class="add-todo btn btn-warning" v-on:click="addList">Todo</button>
             </div>
             </form>
             </div>
         <!-- <hr class="top-line">  -->
-        <ul class="ul-todo">
-            <li v-for="(todo, index) in todos" :key="index">
-                <span class="p-todo">
-                    <input type="checkbox" v-model="todo.isDone" v-bind:id="thisWeek.ymd+todo.id+'todo'">
-                    <label :for="thisWeek.ymd+todo.id+'todo'" v-bind:class="{done:todo.isDone}">{{todo.item}}</label>
-                    <button class="del-todo"  aria-label="閉じる" v-on:click="deleteTodo(index)">
-                        <i class="fas fa-times"></i>
-                    </button>
-                </span>
-            </li>
-        </ul>
-        <hr class="center-line">
         <ul class="ul-schedule">
             <li v-for="(schedule, index) in schedules" :key="index">
                 <span class="p-schedule">
                     <input type="checkbox" v-model="schedule.isPassed" v-bind:id="thisWeek.ymd+schedule.id+'schedule'">
                     <label :for="thisWeek.ymd+schedule.id+'schedule'" v-bind:class="{passed:schedule.isPassed}">{{schedule.item}}</label>
                     <button class="del-schedule"  aria-label="閉じる" v-on:click="deleteSchedule(index)">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </span>
+            </li>
+        </ul>
+        <hr class="center-line">
+        <ul class="ul-todo">
+            <li v-for="(todo, index) in todos" :key="index">
+                <span class="p-todo">
+                    <input type="checkbox" v-model="todo.isDone" v-bind:id="thisWeek.ymd+todo.id+'todo'">
+                    <label :for="thisWeek.ymd+todo.id+'todo'" v-bind:class="{done:todo.isDone}">{{todo.item}}</label>
+                    <button class="del-todo"  aria-label="閉じる" v-on:click="deleteTodo(index)">
                         <i class="fas fa-times"></i>
                     </button>
                 </span>
@@ -94,7 +92,7 @@ export default {
     methods: {
         addList: function(){
             if(this.newItem == '') return;
-            if(this.todos.length == 7) return;
+            if(this.todos.length == 6) return;
             var todo = {
                 id: ++this.uniqueKey,
                 item: this.newItem,
@@ -109,7 +107,7 @@ export default {
         },
         addSchedule: function(){
             if(this.newItem == '') return;
-            if(this.schedules.length == 7) return;
+            if(this.schedules.length == 6) return;
             var schedule = {
                 id: ++this.uniqueKey,
                 item: this.newItem,
@@ -160,22 +158,23 @@ ul.ul-todo {
     text-align: left;
     padding:0;
     margin:0;
-    height:128px;
+    height:130px;
     position:relative;
-    top:10px;
+    top:6px;
 }
 ul.ul-schedule{
     list-style: none;
     text-align: left;
     padding:0;
     margin:0;
-    height:130px;
+    height:128px;
     position:relative;
-    top:6px;
+    top:10px;
 }
 li{
     height:17px;
     position:relative;
+    margin-bottom:2px;
 }
 li > span > label{
     line-height:0.3;
@@ -240,9 +239,9 @@ ul.ul-schedule >li > span > input[type="checkbox"] + label:before {
   opacity: .6;
   -webkit-transition: all .12s, border-color .08s;
   transition: all .12s, border-color .08s;
-  /* background: -webkit-radial-gradient(#25e28d,#fff);
-  background: -moz-radial-gradient(#25e28d,#fff);
-  background: radial-gradient(#25e28d,#fff); */
+  background: -webkit-radial-gradient(#7bbda1,#7bbda1);
+  background: -moz-radial-gradient(#7bbda1,#7bbda1);
+  background: radial-gradient(#7bbda1,#7bbda1);
 
 }
 
@@ -304,7 +303,7 @@ hr{
 }
 hr.center-line{
     position:relative;
-    top:5px;
+    /* top:5px; */
     margin:4px 0;
 }
 /* hr.top-line{
