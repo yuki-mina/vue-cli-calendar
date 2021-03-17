@@ -1,9 +1,13 @@
 <template>
   <div class="weekly-page row">
     <div class="prev" v-on:click="prevWeek">&laquo;</div>
-    <div class="next" v-on:click="nextWeek">&raquo;</div>
+    <div class="next" v-on:click="nextWeek">&raquo;</div>     
+    {{thisWeek}}
     <div class="weekly-title">
-        <div class="this-month">{{thisYear}}/{{thisMonth}}</div>
+        <div class="this-month">
+          {{getThisWeek[0].ymd}}
+          ~
+          {{getThisWeek[6].ymd}}</div>
     </div>
     <weekly-com :thisWeek="getThisWeek[0]"/>
     <weekly-com :thisWeek="getThisWeek[1]"/>
@@ -16,9 +20,7 @@
 </template>
 
 <script>
-// @ is an alias to /src
 import WeeklyCom from '@/components/WeeklyCom.vue'
-
 export default {
   name: 'WeeklyPage',
   components: {
@@ -28,13 +30,7 @@ export default {
     return{
       today: new Date(),
       thisWeek:[],
-      monday: null,
-      // year: new Date().getFullYear(),
-      // month: new Date().getMonth(),
-      // lastDate: 0,
-      // Date0: 0,
-      // dates:[],
-      // thisMon: 0,
+      monday: 0,
     }
   },
   computed: {
@@ -42,41 +38,40 @@ export default {
     thisMonth(){ return this.today.getMonth()+1; },
     date(){ return this.today.getDate(); },
     dayNum(){ return this.today.getDay(); },
-    thisMonday:{ 
-      get: function(){var thisDate =this.date - this.dayNum + 1;
-      var startDate = new Date(this.thisYear, this.thisMonth, thisDate).getDate();
+    thisMonday(){ 
+      var thisDate =this.date - this.dayNum + 1;
+      var startDate = new Date(this.thisYear, this.thisMonth, thisDate);
+      this.monday = startDate;
       return  startDate;
-      },
-      set: function(thisMonday){
-        console.log(111);
-      }
-      
-      },
-    thisSunday(){ return this.thisMonday + 6; },
+    },
     getThisWeek(){
+      this.thisWeek = [];
       var wd =['日','月','火','水','木','金','土'];
-      for(var i=0; i<7; i++){
-        var thisDay = {
-          ymd: `${this.thisYear}/${this.thisMonth}/${this.thisMonday+i}`,
-          date: this.thisMonday+i,
-          isToday:false,
-          day: wd[i+1]
-        };
-        if(i+1 == 7) thisDay.day = wd[0];
-        this.thisWeek.push(thisDay);
-      }
+      this.thisMonday;
+        for(var i=0; i<7; i++){
+          this.monday.setDate(this.monday.getDate() +i)
+          var thisDay = {
+            ymd: `${this.monday.getFullYear()}/${("0"+this.monday.getMonth()).slice(-2)}/${("0"+this.monday.getDate()).slice(-2)}`,
+            date: this.monday.getDate(),
+            isToday:false,
+            day: wd[i+1]
+          };
+          if(i+1 == 7) thisDay.day = wd[0];
+          this.thisWeek.push(thisDay);
+          this.monday.setDate(this.monday.getDate() -i)
+        }
       return this.thisWeek;
-    }
-   
+    },
   },
   methods:{
     prevWeek: function(){
-      this.thisMonday = this.thisMonday-7;
       this.thisWeek = [];
+      this.monday.setDate(this.monday.getDate() -7);
+      console.log(this.monday.getFullYear())
     },
     nextWeek: function(){
-       this.thisMonday = this.thisMonday+7;
       this.thisWeek = [];
+      this.monday.setDate(this.monday.getDate() +7);
     }
   }
 }
