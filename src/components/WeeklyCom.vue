@@ -23,39 +23,46 @@
             </div>
         <!-- <hr class="top-line">  -->
         <ul class="ul-schedule">
-            <li v-for="(schedule, index) in schedules" :key="index">
-                <span class="p-schedule">
-                    <input type="checkbox" v-model="schedule.isPassed" v-bind:id="thisWeek.ymd+schedule.id+'schedule'">
-                    <label :for="thisWeek.ymd+schedule.id+'schedule'" v-bind:class="{passed:schedule.isPassed}">{{schedule.item}}</label>
-                    <button class="del-schedule"  aria-label="閉じる" v-on:click="deleteSchedule(index)">
-                        <i class="fas fa-times"></i>
-                    </button>
-                </span>
-            </li>
+            <draggable :options="options">
+                <li v-for="(schedule, index) in schedules" :key="index">
+                    <span class="p-schedule">
+                        <input type="checkbox" v-bind:id="thisWeek.id+'schedule'+schedule.id">
+                        <label :for="thisWeek.id+'schedule'+schedule.id">{{schedule.item}}</label>
+                        <button class="del-schedule"  aria-label="閉じる" v-on:click="deleteSchedule(index)">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </span>
+                </li>
+            </draggable>
         </ul>
         <hr class="center-line">
         <ul class="ul-todo">
-            <li v-for="(todo, index) in todos" :key="index">
-                <span class="p-todo">
-                    <input type="checkbox" v-model="todo.isDone" v-bind:id="thisWeek.ymd+todo.id+'todo'">
-                    <label :for="thisWeek.ymd+todo.id+'todo'" v-bind:class="{done:todo.isDone}">{{todo.item}}</label>
-                    <button class="del-todo"  aria-label="閉じる" v-on:click="deleteTodo(index)">
-                        <i class="fas fa-times"></i>
-                    </button>
-                </span>
-            </li>
+            <draggable :options="options">
+                <li v-for="(todo, index) in todos" :key="index">
+                    <span class="p-todo">
+                        <input type="checkbox" v-model="todo.isDone" v-bind:id="thisWeek.id+'todo'+todo.id">
+                        <label :for="thisWeek.id+'todo'+todo.id" v-bind:class="{done:todo.isDone}">{{todo.item}}</label>
+                        <button class="del-todo"  aria-label="閉じる" v-on:click="deleteTodo(index)">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </span>
+                </li>
+            </draggable>
         </ul>
     </div>
 </template>
 
 <script>
 import Modal from './Modal.vue'
+  import draggable from 'vuedraggable'
 export default {
     components:{
-        Modal
+        Modal,
+        draggable
     },
     props: {
         thisWeek:{
+            id: String,
             ymd: String,
             isToday: Boolean,
             day: String
@@ -68,7 +75,10 @@ export default {
             schedules:[],
             uniqueKey: 0,
             modal: false,
-            message: ''
+            message: '',
+            options: {
+                  animation: 200
+              },
         }
     },
     watch:{
@@ -135,7 +145,7 @@ export default {
 <style scoped>
 .weekly-com{
     display:inline-block;
-    border: 1px solid #363536;
+    border: 0.5px solid rgba(0, 9, 22, 0.5);
     width:320px;
     height:350px;
 }
@@ -176,23 +186,23 @@ li{
     position:relative;
     margin-bottom:2px;
 }
-li > span > label{
+li label{
     line-height:0.3;
     font-family: none;
     margin-left:5px;
     position:relative;
     top: -2px;
 }
-ul.ul-todo >li > span > label{
+ul.ul-todo label{
     font-size: 16px;
     background: linear-gradient(transparent 20%, #f3dd9c 20%);
 }
-ul.ul-schedule >li > span > label{
+ul.ul-schedule label{
     font-size: 16px;
     /* background: linear-gradient(transparent 20%, #abd6c3 20%); */
 }
 
-ul.ul-todo > li > span > label.done{
+ul.ul-todo label.done{
     font-size: 16px;
     text-decoration: line-through;
     text-decoration-color:#adacad;
@@ -215,7 +225,7 @@ input[type="text"]{
 input[type=checkbox]{
     display:none;
 }
-ul.ul-todo >li > span > input[type="checkbox"] + label:before {
+ul.ul-todo input[type="checkbox"] + label:before {
   content: '';
   display: block;
   width: 15px;
@@ -227,7 +237,7 @@ ul.ul-todo >li > span > input[type="checkbox"] + label:before {
   -webkit-transition: all .12s, border-color .08s;
   transition: all .12s, border-color .08s;
 }
-ul.ul-schedule >li > span > input[type="checkbox"] + label:before {
+ul.ul-schedule input[type="checkbox"] + label:before {
   content: '';
   display: block;
   width: 15px;
@@ -239,13 +249,11 @@ ul.ul-schedule >li > span > input[type="checkbox"] + label:before {
   opacity: .6;
   -webkit-transition: all .12s, border-color .08s;
   transition: all .12s, border-color .08s;
-  background: -webkit-radial-gradient(#7bbda1,#7bbda1);
-  background: -moz-radial-gradient(#7bbda1,#7bbda1);
-  background: radial-gradient(#7bbda1,#7bbda1);
+  background: rgb(13, 106, 245, 0.8);
 
 }
 
-ul.ul-todo >li > span > input[type="checkbox"]:checked + label:before {
+ul.ul-todo input[type="checkbox"]:checked + label:before {
   width: 5px;
   border-radius: 0;
   opacity: 1;
@@ -257,8 +265,8 @@ ul.ul-todo >li > span > input[type="checkbox"]:checked + label:before {
   transform: rotate(45deg);
   margin-right:18px;
 }
-/* ul.ul-schedule >li > input[type="checkbox"]:checked + label:before {
-  width: 5px;
+ul.ul-schedule input[type="checkbox"]:checked + label:before {
+  /* width: 5px;
   border-radius: 0;
   opacity: 1;
   border-top-color: transparent;
@@ -266,8 +274,10 @@ ul.ul-todo >li > span > input[type="checkbox"]:checked + label:before {
   border-bottom-color: #adacad;
   border-right-color: #adacad;
   -webkit-transform: rotate(45deg);
-  transform: rotate(45deg);
-} */
+  transform: rotate(45deg); */
+  border: 1px solid #3f3e3e;
+  background: #ee2222;
+}
 button.del-todo{
     opacity: 0;
     border:none;

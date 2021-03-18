@@ -40,7 +40,7 @@
   }
 
   .modal-footer {
-    background: #ccc;
+    background: rgba(140, 181, 241, 0.8);
     padding: 10px;
     text-align: right;
     border-radius: 0;

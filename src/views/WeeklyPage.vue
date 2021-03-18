@@ -3,10 +3,8 @@
     <div class="prev" v-on:click="prevWeek">&laquo;</div>
     <div class="next" v-on:click="nextWeek">&raquo;</div>
     <div class="weekly-title">
-        <div class="this-month">
-          {{getThisWeek[0].ymd}}
-          ~
-          {{getThisWeek[6].ymd}}</div>
+          <div class = "ymd-from">{{getThisWeek[0].ymd}}</div>
+          <div class = "ymd-to">〜{{getThisWeek[6].ymd}}</div>
     </div>
     <weekly-com :thisWeek="getThisWeek[0]"/>
     <weekly-com :thisWeek="getThisWeek[1]"/>
@@ -52,6 +50,7 @@ export default {
           var month = this.monday.getMonth()+1;
           var date = this.monday.getDate();
           var thisDay = {
+            id:`${this.monday.getFullYear()}-${("0"+month).slice(-2)}-${("0"+date).slice(-2)}`,
             ymd: `${this.monday.getFullYear()}/${("0"+month).slice(-2)}/${("0"+date).slice(-2)}`,
             date: this.monday.getDate(),
             isToday:false,
@@ -81,16 +80,22 @@ export default {
 <style scoped>
 .weekly-page{
   height:100vh;
+  margin-left: auto;
 }
 .weekly-title{
     display:inline-block;
-    border: 1px solid #363536;
+    border: 0.5px solid rgba(0, 9, 22, 0.5);
     height:350px;
     width:320px;
     background:rgba(140, 181, 241, 0.3);
+    font: 2em sans-serif;
+    color: rgba(3, 45, 109, 0.8);
 }
-.this-month{
-  font: 3em sans-serif;
+.ymd-from{
+ text-align: left;
+}
+.ymd-to{
+text-align: right;
 }
 .prev{
   position: fixed;
@@ -100,7 +105,8 @@ export default {
   height:120px;
   cursor: pointer;
   font-size:80px;
-  background: rgb(220, 220, 220);
+  color: rgba(3, 45, 109, 0.8);
+  background: rgba(140, 181, 241, 0.4);
   border-radius:0 100px 100px 0;
   margin:0;
   padding:0;
@@ -114,7 +120,8 @@ export default {
   height:120px;
   cursor: pointer;
   font-size:80px;
-  background: rgb(220, 220, 220);
+  color: rgba(3, 45, 109, 0.8);
+  background: rgba(140, 181, 241, 0.4);
   border-radius:100px 0 0 100px;
   margin:0;
   padding:0;
