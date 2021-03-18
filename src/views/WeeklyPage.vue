@@ -1,8 +1,7 @@
 <template>
   <div class="weekly-page row">
     <div class="prev" v-on:click="prevWeek">&laquo;</div>
-    <div class="next" v-on:click="nextWeek">&raquo;</div>     
-    {{thisWeek}}
+    <div class="next" v-on:click="nextWeek">&raquo;</div>
     <div class="weekly-title">
         <div class="this-month">
           {{getThisWeek[0].ymd}}
@@ -34,13 +33,13 @@ export default {
     }
   },
   computed: {
-    thisYear(){ return this.today.getFullYear(); },
-    thisMonth(){ return this.today.getMonth()+1; },
+    // thisYear(){ return this.today.getFullYear(); },
+    // thisMonth(){ return this.today.getMonth()+1; },
     date(){ return this.today.getDate(); },
     dayNum(){ return this.today.getDay(); },
     thisMonday(){ 
       var thisDate =this.date - this.dayNum + 1;
-      var startDate = new Date(this.thisYear, this.thisMonth, thisDate);
+      var startDate = new Date(this.today.getFullYear(), this.today.getMonth(), thisDate);
       this.monday = startDate;
       return  startDate;
     },
@@ -50,8 +49,10 @@ export default {
       this.thisMonday;
         for(var i=0; i<7; i++){
           this.monday.setDate(this.monday.getDate() +i)
+          var month = this.monday.getMonth()+1;
+          var date = this.monday.getDate();
           var thisDay = {
-            ymd: `${this.monday.getFullYear()}/${("0"+this.monday.getMonth()).slice(-2)}/${("0"+this.monday.getDate()).slice(-2)}`,
+            ymd: `${this.monday.getFullYear()}/${("0"+month).slice(-2)}/${("0"+date).slice(-2)}`,
             date: this.monday.getDate(),
             isToday:false,
             day: wd[i+1]
@@ -86,7 +87,7 @@ export default {
     border: 1px solid #363536;
     height:350px;
     width:320px;
-    background:rgba(110, 109, 109, 0.1);
+    background:rgba(140, 181, 241, 0.3);
 }
 .this-month{
   font: 3em sans-serif;

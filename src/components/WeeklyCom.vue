@@ -3,8 +3,8 @@
          <Modal v-on:close="closeModal" v-if="modal">
       <p>Todo or Schedule</p>
       <template slot="footer">
-        <button class="modal-add-schedule btn btn-success" v-on:click="addSchedule">Schedule</button>
-        <button class="modal-add-todo btn btn-warning" v-on:click="addList" focus>Todo</button>
+        <button class="modal-add-schedule btn" v-on:click="addSchedule">Schedule</button>
+        <button class="modal-add-todo btn" v-on:click="addList" focus>Todo</button>
       </template>
     </Modal>
         <div class="header-color">
@@ -16,8 +16,8 @@
             <input type="text" v-model="newItem" maxlength="14">
             <div>
                 <button class="modal-show" @click="openModal" style="display:none;"></button>
-                <button class="add-schedule btn btn-success" v-on:click="addSchedule">Schedule</button>
-                <button class="add-todo btn btn-warning" v-on:click="addList">Todo</button>
+                <button class="add-schedule btn" v-on:click="addSchedule">Schedule</button>
+                <button class="add-todo btn" v-on:click="addList">Todo</button>
             </div>
             </form>
             </div>
@@ -142,7 +142,7 @@ export default {
 .header-color{
     position:relative;
     left:-12px;
-    background:rgba(110, 109, 109, 0.2);
+    background:rgba(140, 181, 241, 0.3);
     width: 320px;
     height: 80px;
     margin: 0;
@@ -288,9 +288,27 @@ span:hover button.del-schedule{
     -webkit-transition:	all 0.2s ease;
 	transition:		all 0.2s ease;
 }
-button.add-todo,button.add-schedule{
+button.add-schedule,
+button.modal-add-schedule{
     height:18px;
     line-height: 0;
+    background: rgb(13, 106, 245, 0.8);
+    color: #fff;
+}
+button.add-todo,
+button.modal-add-todo{
+    height:18px;
+    line-height: 0;
+    background: rgb(13, 106, 245, 0.8);
+    color: #fff;
+}
+button.add-schedule:hover,
+button.modal-add-schedule:hover{
+    background: rgb(13, 106, 245);
+}
+button.add-todo:hover,
+button.modal-add-todo:hover{
+    background: rgb(13, 106, 245);
 }
 button{
    margin-left:5px;
