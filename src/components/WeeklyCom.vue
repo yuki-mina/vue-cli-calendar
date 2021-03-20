@@ -1,12 +1,12 @@
 <template>
     <div id="weekly-com" class="weekly-com">
-         <Modal v-on:close="closeModal" v-if="modal">
-      <p>Todo or Schedule</p>
-      <template slot="footer">
-        <button class="modal-add-schedule btn" v-on:click="addSchedule">Schedule</button>
-        <button class="modal-add-todo btn" v-on:click="addList" focus>Todo</button>
-      </template>
-    </Modal>
+        <Modal v-on:close="closeModal" v-if="modal">
+            <p>Todo or Schedule</p>
+            <template slot="footer">
+                <button class="modal-add-schedule btn" v-on:click="addSchedule">Schedule</button>
+                <button class="modal-add-todo btn" v-on:click="addList" focus>Todo</button>
+            </template>
+        </Modal>
         <div class="header-color">
             <div>
                 {{thisWeek.date}}
@@ -26,8 +26,8 @@
             <draggable :options="options">
                 <li v-for="(schedule, index) in schedules" :key="index">
                     <span class="p-schedule">
-                        <input type="checkbox" v-bind:id="thisWeek.id+'schedule'+schedule.id">
-                        <label :for="thisWeek.id+'schedule'+schedule.id">{{schedule.item}}</label>
+                        <input type="checkbox" v-model="schedule.isPassed" v-bind:id="schedule.id">
+                        <label :for="schedule.id">{{schedule.item}}</label>
                         <button class="del-schedule"  aria-label="閉じる" v-on:click="deleteSchedule(index)">
                             <i class="fas fa-times"></i>
                         </button>
@@ -40,8 +40,8 @@
             <draggable :options="options">
                 <li v-for="(todo, index) in todos" :key="index">
                     <span class="p-todo">
-                        <input type="checkbox" v-model="todo.isDone" v-bind:id="thisWeek.id+'todo'+todo.id">
-                        <label :for="thisWeek.id+'todo'+todo.id" v-bind:class="{done:todo.isDone}">{{todo.item}}</label>
+                        <input type="checkbox" v-model="todo.isDone" v-bind:id="todo.id">
+                        <label :for="todo.id" v-bind:class="{done:todo.isDone}">{{todo.item}}</label>
                         <button class="del-todo"  aria-label="閉じる" v-on:click="deleteTodo(index)">
                             <i class="fas fa-times"></i>
                         </button>
@@ -65,6 +65,7 @@ export default {
             id: String,
             ymd: String,
             isToday: Boolean,
+            date: Date,
             day: String
         }
     },
@@ -77,34 +78,46 @@ export default {
             modal: false,
             message: '',
             options: {
-                  animation: 200
-              },
+                animation: 200
+            },
         }
     },
     watch:{
         todos: {
             handler: function(){
-                localStorage.setItem(`${this.thisWeek.ymd}todos`,JSON.stringify(this.todos));
+                localStorage.setItem(`${this.thisWeek.id}todos`,JSON.stringify(this.todos));
 
             },
             deep:true
         },
         schedules:{
             handler: function(){
-                localStorage.setItem(`${this.thisWeek.ymd}schedules`,JSON.stringify(this.schedules))
+                localStorage.setItem(`${this.thisWeek.id}schedules`,JSON.stringify(this.schedules));
+            }
+        },
+        weekId:{
+            handler: function(){
+                this.todos = JSON.parse(localStorage.getItem(`${this.thisWeek.id}todos`)) || [];
+                this.schedules = JSON.parse(localStorage.getItem(`${this.thisWeek.id}schedules`)) || [];
             }
         }
     },
-    mounted: function(){
-        this.todos = JSON.parse(localStorage.getItem(`${this.thisWeek.ymd}todos`)) || [];
-        this.schedules = JSON.parse(localStorage.getItem(`${this.thisWeek.ymd}schedules`)) || [];
+    mounted(){
+        this.todos = JSON.parse(localStorage.getItem(`${this.thisWeek.id}todos`)) || [];
+        this.schedules = JSON.parse(localStorage.getItem(`${this.thisWeek.id}schedules`)) || [];
+    },
+    computed:{
+        weekId(){
+            return this.thisWeek.id;
+        }
     },
     methods: {
         addList: function(){
             if(this.newItem == '') return;
             if(this.todos.length == 6) return;
             var todo = {
-                id: ++this.uniqueKey,
+                id: `w${this.thisWeek.id}todo${++this.uniqueKey}`,
+                date: `${this.thisWeek.id}todos`,
                 item: this.newItem,
                 isDone:false
             };
@@ -119,7 +132,8 @@ export default {
             if(this.newItem == '') return;
             if(this.schedules.length == 6) return;
             var schedule = {
-                id: ++this.uniqueKey,
+                id: `w${this.thisWeek.id}schedule${++this.uniqueKey}`,
+                date: `${this.thisWeek.id}schedules`,
                 item: this.newItem,
                 isPassed:false
             };
@@ -145,7 +159,8 @@ export default {
 <style scoped>
 .weekly-com{
     display:inline-block;
-    border: 0.5px solid rgba(0, 9, 22, 0.5);
+    border-right: 0.5px solid rgba(0, 9, 22, 0.5);
+    border-bottom: 0.5px solid rgba(0, 9, 22, 0.5);
     width:320px;
     height:350px;
 }
@@ -210,7 +225,7 @@ ul.ul-todo label.done{
     color:#adacad;
     background: none;
 }
-/* ul.ul-schedule > li > label.passed{
+/* ul.ul-schedule label.passed{
     font-size: 13px;
     text-decoration: line-through;
     text-decoration-color:#adacad;
@@ -319,6 +334,10 @@ button.modal-add-schedule:hover{
 button.add-todo:hover,
 button.modal-add-todo:hover{
     background: rgb(13, 106, 245);
+}
+button.modal-add-schedule,
+button.modal-add-todo{
+    height:36px;
 }
 button{
    margin-left:5px;

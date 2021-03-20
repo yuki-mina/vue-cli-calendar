@@ -23,7 +23,7 @@ export default {
   components: {
     WeeklyCom
   },
-  data: function(){
+  data(){
     return{
       today: new Date(),
       thisWeek:[],
@@ -50,7 +50,7 @@ export default {
           var month = this.monday.getMonth()+1;
           var date = this.monday.getDate();
           var thisDay = {
-            id:`${this.monday.getFullYear()}-${("0"+month).slice(-2)}-${("0"+date).slice(-2)}`,
+            id:`${this.monday.getFullYear()}${("0"+month).slice(-2)}${("0"+date).slice(-2)}`,
             ymd: `${this.monday.getFullYear()}/${("0"+month).slice(-2)}/${("0"+date).slice(-2)}`,
             date: this.monday.getDate(),
             isToday:false,
@@ -67,7 +67,6 @@ export default {
     prevWeek: function(){
       this.thisWeek = [];
       this.monday.setDate(this.monday.getDate() -7);
-      console.log(this.monday.getFullYear())
     },
     nextWeek: function(){
       this.thisWeek = [];
@@ -81,10 +80,13 @@ export default {
 .weekly-page{
   height:100vh;
   margin-left: auto;
+    border-left: 0.5px solid rgba(0, 9, 22, 0.5);
+    border-top: 0.5px solid rgba(0, 9, 22, 0.5);
 }
 .weekly-title{
     display:inline-block;
-    border: 0.5px solid rgba(0, 9, 22, 0.5);
+    border-right: 0.5px solid rgba(0, 9, 22, 0.5);
+    border-bottom: 0.5px solid rgba(0, 9, 22, 0.5);
     height:350px;
     width:320px;
     background:rgba(140, 181, 241, 0.3);

@@ -1,14 +1,20 @@
 <template>
     <div>
-        <h1>
-            MonthlyComponent
-        </h1>
+             {{thisMonth.date}}
     </div>
 </template>
 
 <script>
 export default {
-    
+    props: {
+        thisMonth:{
+            id: String,
+            ymd: String,
+            isToday: Boolean,
+            date: String
+            // day: String
+        }
+    },
 }
 </script>
 
