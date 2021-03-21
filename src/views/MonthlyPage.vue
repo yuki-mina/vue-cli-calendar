@@ -1,8 +1,10 @@
 <template>
   <div class="monthly-page">
-    <monthly-com/>
     <div class="prev" v-on:click="prevMonth">&laquo;</div>
     <div class="next" v-on:click="nextMonth">&raquo;</div>
+    <div class="monthly-title">
+      {{currentDate.format("MM")}}月
+    </div>
     <div class = "week" v-for="(week, index) in getThisMonth" :key="index">
       <monthly-com class = "day" v-for="(day,index) in week" :key="index" :thisMonth="day"/>
     </div>
@@ -74,9 +76,14 @@ export default {
 </script>
 <style scoped>
 .monthly-page{
-  max-width:900px;
-  border-top: 0.5px solid rgba(0, 9, 22, 0.5);
+  width:100%;
   margin:auto;
+}
+.monthly-title{
+  border-bottom: 0.5px solid rgba(0, 9, 22, 0.5);
+    font: 2em sans-serif;
+    color: rgba(3, 45, 109, 0.8);
+    padding-bottom:10px;
 }
 .week{
   display:flex;

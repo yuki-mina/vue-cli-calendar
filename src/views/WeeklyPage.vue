@@ -80,8 +80,8 @@ export default {
 .weekly-page{
   height:100vh;
   margin-left: auto;
-    border-left: 0.5px solid rgba(0, 9, 22, 0.5);
-    border-top: 0.5px solid rgba(0, 9, 22, 0.5);
+  border-left: 0.5px solid rgba(0, 9, 22, 0.5);
+  border-top: 0.5px solid rgba(0, 9, 22, 0.5);
 }
 .weekly-title{
     display:inline-block;
