@@ -27,7 +27,7 @@
                 <li v-for="(schedule, index) in schedules" :key="index">
                     <span class="p-schedule">
                         <input type="checkbox" v-model="schedule.isPassed" v-bind:id="schedule.id">
-                        <label :for="schedule.id">{{schedule.item}}</label>
+                        <label :for="schedule.id"><span>{{schedule.item}}</span></label>
                         <button class="del-schedule"  aria-label="閉じる" v-on:click="deleteSchedule(index)">
                             <i class="fas fa-times"></i>
                         </button>
@@ -41,7 +41,7 @@
                 <li v-for="(todo, index) in todos" :key="index">
                     <span class="p-todo">
                         <input type="checkbox" v-model="todo.isDone" v-bind:id="todo.id">
-                        <label :for="todo.id" v-bind:class="{done:todo.isDone}">{{todo.item}}</label>
+                        <label :for="todo.id" v-bind:class="{done:todo.isDone}"><span>{{todo.item}}</span></label>
                         <button class="del-todo"  aria-label="閉じる" v-on:click="deleteTodo(index)">
                             <i class="fas fa-times"></i>
                         </button>
@@ -54,7 +54,7 @@
 
 <script>
 import Modal from './Modal.vue'
-  import draggable from 'vuedraggable'
+import draggable from 'vuedraggable'
 export default {
     components:{
         Modal,
@@ -201,22 +201,25 @@ li{
     position:relative;
     margin-bottom:2px;
 }
-li label{
-    line-height:0.3;
+label{
+    height:15px;
+    line-height:15px;
     font-family: none;
     margin-left:5px;
+    font-size: 16px;
+    padding:0 5px 0 2px;
+
+}
+ul.ul-todo label span{
     position:relative;
-    top: -2px;
+    top:-2px;
 }
 ul.ul-todo label{
-    font-size: 16px;
     background: linear-gradient(transparent 20%, #f3dd9c 20%);
 }
 ul.ul-schedule label{
-    font-size: 16px;
-    /* background: linear-gradient(transparent 20%, #abd6c3 20%); */
+    background: linear-gradient(transparent 20%, rgb(13, 106, 245,0.3) 20%);
 }
-
 ul.ul-todo label.done{
     font-size: 16px;
     text-decoration: line-through;
@@ -252,7 +255,7 @@ ul.ul-todo input[type="checkbox"] + label:before {
   -webkit-transition: all .12s, border-color .08s;
   transition: all .12s, border-color .08s;
 }
-ul.ul-schedule input[type="checkbox"] + label:before {
+/* ul.ul-schedule input[type="checkbox"] + label:before {
   content: '';
   display: block;
   width: 15px;
@@ -266,7 +269,7 @@ ul.ul-schedule input[type="checkbox"] + label:before {
   transition: all .12s, border-color .08s;
   background: rgb(13, 106, 245, 0.8);
 
-}
+} */
 
 ul.ul-todo input[type="checkbox"]:checked + label:before {
   width: 5px;
@@ -280,7 +283,7 @@ ul.ul-todo input[type="checkbox"]:checked + label:before {
   transform: rotate(45deg);
   margin-right:18px;
 }
-ul.ul-schedule input[type="checkbox"]:checked + label:before {
+/* ul.ul-schedule input[type="checkbox"]:checked + label:before { */
   /* width: 5px;
   border-radius: 0;
   opacity: 1;
@@ -290,9 +293,9 @@ ul.ul-schedule input[type="checkbox"]:checked + label:before {
   border-right-color: #adacad;
   -webkit-transform: rotate(45deg);
   transform: rotate(45deg); */
-  border: 1px solid #3f3e3e;
+  /* border: 1px solid #3f3e3e;
   background: #ee2222;
-}
+} */
 button.del-todo{
     opacity: 0;
     border:none;

@@ -5,13 +5,16 @@
         </div>
         <ul class="ul-schedule">
             <draggable :options="options">
-                <li v-for="(schedule, index) in schedules" :key="index">
+                <li v-for="(schedule, index) in schedules" :key="index" v-on:click="openModal">
                     <span class="p-schedule">
                         <input type="checkbox" v-model="schedule.isPassed" v-bind:id="schedule.id">
                         <label :for="schedule.id">{{schedule.item}}</label>
-                        <button class="del-schedule"  aria-label="閉じる" v-on:click="deleteSchedule(index)">
-                            <i class="fas fa-times"></i>
-                        </button>
+                        <Modal v-on:close="closeModal" v-if="modal">
+                            <p>Todo or Schedule</p>
+                            <template slot="footer">
+                               
+                            </template>
+                        </Modal>
                     </span>
                 </li>
             </draggable>
@@ -20,9 +23,11 @@
 </template>
 
 <script>
+import Modal from './Modal.vue'
 import draggable from 'vuedraggable'
 export default {
     components:{
+        Modal,
         draggable
     },
     props: {
@@ -40,8 +45,8 @@ export default {
             // todos:[],
             schedules:[],
             uniqueKey: 0,
-            // modal: false,
-            // message: '',
+            modal: false,
+            message: '',
             options: {
                 animation: 200
             },
@@ -67,6 +72,17 @@ export default {
             return this.thisMonth.id;
         }
     },
+    methods:{
+        edit(){
+            console.log(22)
+        },
+        openModal() {
+            this.modal = true;
+        },
+        closeModal() {
+        this.modal = false
+        },
+    }
 }
 </script>
 
@@ -88,7 +104,7 @@ li{
     height:17px;
     position:relative;
     margin-bottom:2px;
-    background: rgb(171, 214, 195,0.5);
+    background: rgb(13, 106, 245,0.3);
     margin:2px 10px;
 }
 li label{
@@ -128,13 +144,6 @@ input[type=checkbox]{
   background: #ee2222;
 } */
 
-button.del-schedule{
-    opacity: 0;
-    border:none;
-    background:#fff;
-    margin:0 0 0 3px;
-    padding:0;
-}
 span:hover button.del-schedule{
     opacity:1;
     -webkit-transition:	all 0.2s ease;
@@ -156,9 +165,5 @@ button.modal-add-schedule{
 }
 button{
    margin-left:5px;
-}
-.fa-times{
-    color:rgb(209, 179, 179);
-    background: rgb(171, 214, 195,0.5);
 }
 </style>
