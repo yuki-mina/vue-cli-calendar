@@ -42,7 +42,6 @@
   .modal-footer {
     background: rgba(140, 181, 241, 0.8);
     padding: 10px;
-    text-align: right;
     border-radius: 0;
   }
 
@@ -63,10 +62,9 @@
   opacity: 0;
 }
 
-  .modal-enter .modal-window ,
-  .modal-leave-to .modal-window 
-  {
-    opacity: 0;
-    transform: translateY(-20px);
-  }
+.modal-enter .modal-window,
+.modal-leave-to .modal-window {
+  opacity: 0;
+  transform: translateY(-20px);
+}
 </style>

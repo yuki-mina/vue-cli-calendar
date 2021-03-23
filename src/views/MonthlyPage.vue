@@ -1,5 +1,18 @@
 <template>
   <div class="monthly-page">
+   <Modal class = "add-schedule" v-on:close="closeModal" v-if="modal">
+     <p>new schedule</p>
+     
+      <template slot="footer">
+        <div class ="schedule-date">date
+        </div>
+          <Datepicker class ="datepicker"></Datepicker>
+        <div class="content">schedule
+        </div>
+          <input type="text" v-model="newItem" maxlength="14">
+      </template>
+    </Modal>
+    <button class="add-schedule" v-on:click="openModal"><i class="fas fa-plus-circle"></i></button>
     <div class="prev" v-on:click="prevMonth">&laquo;</div>
     <div class="next" v-on:click="nextMonth">&raquo;</div>
     <div class="monthly-title">
@@ -12,16 +25,26 @@
 </template>
 
 <script>
+import Datepicker from "vuejs-datepicker"
 import MonthlyCom from '@/components/MonthlyCom.vue'
-import moment from "moment";
+import moment from "moment"
+import Modal from '@/components/Modal.vue'
 export default {
   name: 'MonthlyPage',
   components: {
-    MonthlyCom
+    MonthlyCom,
+    Datepicker,
+    Modal,
   },
   data(){
     return {
-    currentDate: moment(),
+      currentDate: moment(),
+      newItem:'',
+      modal: false,
+      message: '',
+      options: {
+          animation: 200
+      },
     }
   },
   computed: {
@@ -70,7 +93,31 @@ export default {
     },
     prevMonth(){
       this.currentDate = moment(this.currentDate).subtract(1,"month");
-    }
+    },
+
+        addSchedule(){
+            // if(this.newItem == '') return;
+            // if(this.schedules.length == 6) return;
+            // var schedule = {
+            //     id: `w${this.thisWeek.id}schedule${++this.uniqueKey}`,
+            //     date: `${this.thisWeek.id}schedules`,
+            //     item: this.newItem,
+            //     isPassed:false
+            // };
+            // this.schedules.push(schedule);
+            // this.newItem = '';
+            // this.closeModal();
+            console.log(99)
+        },
+        deleteSchedule: function(index){
+            this.schedules.splice(index,1);
+        },
+        openModal() {
+            this.modal = true;
+        },
+        closeModal() {
+        this.modal = false
+        },
   },
 }
 </script>
@@ -124,5 +171,45 @@ export default {
   margin:0;
   padding:0;
   z-index: 1;
+}
+button.add-schedule{
+  background: none;
+  border:none;
+  position: fixed;
+  bottom:10px;
+  right:10px;
+  outline: none;
+  cursor: pointer;
+  z-index: 3;
+}
+.fa-plus-circle{
+  color: rgba(3, 45, 109, 0.8);
+  font-size:60px;
+}
+/* .add-schedule >>> .modal-window {
+    height:440px;
+    width:340px;
+} */
+.add-schedule >>> .modal-footer{
+  text-align:left;
+}
+.add-schedule{
+  position:absolute;
+}
+/* .schedule-date{
+  overflow: visible;
+} */
+/* .content{
+  position:relative;
+  top:0;
+} */
+input[type="text"]{
+    display:block;
+    width:176px;
+    height:30px;
+}
+.datepicker >>> .vdp-datepicker__calendar{
+  position:relative;
+  top:0;
 }
 </style>

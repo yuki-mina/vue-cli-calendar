@@ -4,17 +4,17 @@
              {{thisMonth.date}}
         </div>
         <ul class="ul-schedule">
+            <Balloon class = "schedule-edit" v-on:close="closeBalloon" v-if="balloon">
+                <div class = "bottons">
+                    <button class="btn edit-schedule">edit</button>
+                    <button class="btn del-schedule">delete</button>
+                </div>
+            </Balloon>
             <draggable :options="options">
-                <li v-for="(schedule, index) in schedules" :key="index" v-on:click="openModal">
+                <li v-for="(schedule, index) in schedules" :key="index" v-on:click="openBalloon">
                     <span class="p-schedule">
                         <input type="checkbox" v-model="schedule.isPassed" v-bind:id="schedule.id">
                         <label :for="schedule.id">{{schedule.item}}</label>
-                        <Modal v-on:close="closeModal" v-if="modal">
-                            <p>Todo or Schedule</p>
-                            <template slot="footer">
-                               
-                            </template>
-                        </Modal>
                     </span>
                 </li>
             </draggable>
@@ -23,12 +23,12 @@
 </template>
 
 <script>
-import Modal from './Modal.vue'
+import Balloon from './Balloon.vue'
 import draggable from 'vuedraggable'
 export default {
     components:{
-        Modal,
-        draggable
+        Balloon,
+        draggable,
     },
     props: {
         thisMonth:{
@@ -45,7 +45,7 @@ export default {
             // todos:[],
             schedules:[],
             uniqueKey: 0,
-            modal: false,
+            balloon: false,
             message: '',
             options: {
                 animation: 200
@@ -76,11 +76,12 @@ export default {
         edit(){
             console.log(22)
         },
-        openModal() {
-            this.modal = true;
+        openBalloon(event) {
+            this.balloon = true;
+        console.log(event);
         },
-        closeModal() {
-        this.modal = false
+        closeBalloon() {
+        this.balloon = false;
         },
     }
 }
@@ -124,46 +125,37 @@ input[type="text"]{
 input[type=checkbox]{
     display:none;
 }
-/* ul.ul-schedule input[type="checkbox"] + label:before {
-  content: '';
-  display: block;
-  width: 15px;
-  height: 15px;
-  border: 1px solid #101111;
-  border-radius: 50%;
-  display: inline-block;
-  margin-right:8px;
-  opacity: .6;
-  -webkit-transition: all .12s, border-color .08s;
-  transition: all .12s, border-color .08s;
-  background: rgb(13, 106, 245, 0.8);
 
-} */
-/* ul.ul-schedule input[type="checkbox"]:checked + label:before {
-  border: 1px solid #3f3e3e;
-  background: #ee2222;
-} */
-
-span:hover button.del-schedule{
-    opacity:1;
-    -webkit-transition:	all 0.2s ease;
-	transition:		all 0.2s ease;
+.bottons{
+    padding-top:4px;
 }
-button.add-schedule,
-button.modal-add-schedule{
-    height:18px;
+.choosing{
+    background:rgb(13, 106, 245, 0.8);
+    color:#fff;
+}
+button.edit-schedule{
+    height:30px;
     line-height: 0;
     background: rgb(13, 106, 245, 0.8);
     color: #fff;
 }
-button.add-schedule:hover,
-button.modal-add-schedule:hover{
+button.edit-schedule:hover{
     background: rgb(13, 106, 245);
 }
-button.modal-add-schedule{
-    height:36px;
+button.del-schedule{
+    height:30px;
+    line-height: 0;
+    background: rgba(238, 134, 134, 0.8);
+    color: #fff;
+}
+button.del-schedule:hover{
+    background: rgba(238, 134, 134);
 }
 button{
-   margin-left:5px;
+   margin-left:4px;
+}
+.schedule-edit >>> .modal-window {
+    width:500px;
+    height:500px;
 }
 </style>

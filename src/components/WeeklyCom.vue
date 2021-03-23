@@ -15,7 +15,7 @@
             <form v-on:submit.prevent>
             <input type="text" v-model="newItem" maxlength="14">
             <div>
-                <button class="modal-show" @click="openModal" style="display:none;"></button>
+                <button class="modal-show" v-on:click="openModal" style="display:none;"></button>
                 <button class="add-schedule btn" v-on:click="addSchedule">Schedule</button>
                 <button class="add-todo btn" v-on:click="addList">Todo</button>
             </div>
@@ -344,6 +344,7 @@ button.modal-add-todo{
 }
 button{
    margin-left:5px;
+   outline: none;
 }
 .fa-times{
     color:rgb(209, 179, 179);
