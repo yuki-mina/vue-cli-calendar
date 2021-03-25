@@ -4,12 +4,16 @@
      <p>new schedule</p>
      
       <template slot="footer">
-        <div class ="schedule-date">date
-        </div>
-          <Datepicker class ="datepicker"></Datepicker>
-        <div class="content">schedule
-        </div>
-          <input type="text" v-model="newItem" maxlength="14">
+        <div class = "clearfix">
+            <div class ="schedule-date">
+              date
+              <Datepicker class ="datepicker"></Datepicker>
+            </div>
+            <div class="schedule-content">
+              schedule
+              <input type="text" v-model="newItem" maxlength="14">
+            </div>
+          </div>
       </template>
     </Modal>
     <button class="add-schedule" v-on:click="openModal"><i class="fas fa-plus-circle"></i></button>
@@ -155,7 +159,7 @@ export default {
   border-radius:0 100px 100px 0;
   margin:0;
   padding:0;
-  z-index: 1;
+  z-index: 4;
 }
 .next{
   position: fixed;
@@ -170,7 +174,7 @@ export default {
   border-radius:100px 0 0 100px;
   margin:0;
   padding:0;
-  z-index: 1;
+  z-index: 4;
 }
 button.add-schedule{
   background: none;
@@ -180,36 +184,30 @@ button.add-schedule{
   right:10px;
   outline: none;
   cursor: pointer;
-  z-index: 3;
+  z-index: 4;
 }
 .fa-plus-circle{
   color: rgba(3, 45, 109, 0.8);
   font-size:60px;
 }
-/* .add-schedule >>> .modal-window {
-    height:440px;
-    width:340px;
-} */
-.add-schedule >>> .modal-footer{
-  text-align:left;
-}
-.add-schedule{
-  position:absolute;
-}
-/* .schedule-date{
-  overflow: visible;
-} */
-/* .content{
-  position:relative;
-  top:0;
-} */
-input[type="text"]{
-    display:block;
-    width:176px;
-    height:30px;
-}
 .datepicker >>> .vdp-datepicker__calendar{
-  position:relative;
-  top:0;
+  position:fixed;
+  top:0px;
+  left:0;
+}
+.schedule-date{
+  float:left;
+}
+.schedule-content{
+  float:right;
+}
+.schedule-content input{
+  display: block;
+  margin-left:5px;
+}
+.clearfix::after {
+   content: "";
+   display: block;
+   clear: both;
 }
 </style>

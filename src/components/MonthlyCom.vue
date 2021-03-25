@@ -1,21 +1,18 @@
 <template>
     <div id="monthly-com" class="monthly-com">
-        <div class="header-color">
-             {{thisMonth.date}}
-        </div>
-        <ul class="ul-schedule">
-            <Balloon class = "schedule-edit" v-on:close="closeBalloon" v-if="balloon">
+            <!-- <Balloon class = "schedule-edit" v-on:close="closeBalloon" v-if="balloon">
                 <div class = "bottons">
                     <button class="btn edit-schedule">edit</button>
                     <button class="btn del-schedule">delete</button>
                 </div>
-            </Balloon>
+            </Balloon> -->
+        <div class="header-color">
+             {{thisMonth.date}}
+        </div>
+        <ul class="ul-schedule">
             <draggable :options="options">
-                <li v-for="(schedule, index) in schedules" :key="index" v-on:click="openBalloon">
-                    <span class="p-schedule">
-                        <input type="checkbox" v-model="schedule.isPassed" v-bind:id="schedule.id">
-                        <label :for="schedule.id">{{schedule.item}}</label>
-                    </span>
+                <li class="p-schedule" v-for="(schedule, index) in schedules" :key="index" v-on:click="openBalloon">
+                    {{schedule.item}}
                 </li>
             </draggable>
         </ul>
@@ -78,7 +75,7 @@ export default {
         },
         openBalloon(event) {
             this.balloon = true;
-        console.log(event);
+            event.target.classList.toggle('choosing');
         },
         closeBalloon() {
         this.balloon = false;
@@ -88,6 +85,9 @@ export default {
 </script>
 
 <style scoped>
+.monthly-com{
+    position:relative;
+}
 .header-color{
     height:23px;
     background:rgba(140, 181, 241, 0.3);
@@ -107,25 +107,23 @@ li{
     margin-bottom:2px;
     background: rgb(13, 106, 245,0.3);
     margin:2px 10px;
-}
-li label{
-    line-height:0.3;
+    line-height:1;
     font-family: none;
     margin-left:5px;
     position:relative;
     top: -2px;
 }
-ul.ul-schedule label{
+ul.ul-schedule{
     font-size: 16px;
 }
 input[type="text"]{
     width:70%;
     height:20px;
 }
-input[type=checkbox]{
-    display:none;
+.choosing{
+    background:rgba(4, 38, 88, 0.8);
+    color:#fff;
 }
-
 .bottons{
     padding-top:4px;
 }
