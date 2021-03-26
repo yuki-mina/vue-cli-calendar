@@ -14,6 +14,7 @@
               <input type="text" v-model="newItem" maxlength="14">
             </div>
           </div>
+          <button class="modal-add-schedule btn" v-on:click="addSchedule">add</button>
       </template>
     </Modal>
     <button class="add-schedule" v-on:click="openModal"><i class="fas fa-plus-circle"></i></button>
@@ -209,5 +210,20 @@ button.add-schedule{
    content: "";
    display: block;
    clear: both;
+}
+
+button.modal-add-schedule{
+    position: relative;
+    bottom: -12px;
+    height:30px;
+    line-height: 0;
+    background: rgb(13, 106, 245, 0.8);
+    color: #fff;
+}
+button.modal-add-schedule:hover{
+    background: rgb(13, 106, 245);
+}
+button.modal-add-todo:hover{
+    background: rgb(13, 106, 245);
 }
 </style>
