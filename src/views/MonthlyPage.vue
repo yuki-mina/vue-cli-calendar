@@ -2,15 +2,23 @@
   <div class="monthly-page">
    <Modal class = "add-schedule" v-on:close="closeModal" v-if="modal">
      <p>new schedule</p>
-     
       <template slot="footer">
         <div class = "clearfix">
             <div class ="schedule-date">
               date
-              <Datepicker class ="datepicker"></Datepicker>
+              <Datepicker 
+              class ="datepicker"
+              :language="ja"
+              :format="DatePickerFormat"
+              placeholder="Select Date"
+              v-model ="date"
+              >
+
+              </Datepicker>
             </div>
             <div class="schedule-content">
               schedule
+
               <input type="text" v-model="newItem" maxlength="14">
             </div>
           </div>
@@ -31,6 +39,7 @@
 
 <script>
 import Datepicker from "vuejs-datepicker"
+import {ja} from 'vuejs-datepicker/dist/locale'
 import MonthlyCom from '@/components/MonthlyCom.vue'
 import moment from "moment"
 import Modal from '@/components/Modal.vue'
@@ -43,6 +52,9 @@ export default {
   },
   data(){
     return {
+      newItem:'',
+      date: '',
+      schedules:[],
       currentDate: moment(),
       newItem:'',
       modal: false,
@@ -50,8 +62,23 @@ export default {
       options: {
           animation: 200
       },
+      ja:ja,
+      DatePickerFormat: 'yyyy/MM/dd'
     }
   },
+
+    watch:{
+        schedules:{
+            handler: function(){
+                localStorage.setItem(`${this.customformat(this.date)}schedules`, JSON.stringify(this.schedules));
+            }
+        },
+        // getThisMonth:{
+        //     handler: function(){
+        //         this.schedules  = JSON.parse(localStorage.getItem(`${this.customformat(this.date)}schedules`)) || [];
+        //     }
+        // }
+    },
   computed: {
     getThisMonth(){
       return this.getCalendar();
@@ -99,20 +126,26 @@ export default {
     prevMonth(){
       this.currentDate = moment(this.currentDate).subtract(1,"month");
     },
-
+    customformat(value){
+      return moment(value).format('YYYYMMDD');
+    },
         addSchedule(){
-            // if(this.newItem == '') return;
+          let customformatDate = this.customformat(this.date);
+          if(customformatDate === 'Invalid date') return;
+          if(this.newItem === '') return;
+          
             // if(this.schedules.length == 6) return;
-            // var schedule = {
-            //     id: `w${this.thisWeek.id}schedule${++this.uniqueKey}`,
-            //     date: `${this.thisWeek.id}schedules`,
-            //     item: this.newItem,
-            //     isPassed:false
-            // };
-            // this.schedules.push(schedule);
-            // this.newItem = '';
-            // this.closeModal();
-            console.log(99)
+            var schedule = {
+                id: `m${customformatDate}schedule${++this.uniqueKey}`,
+                date: `${customformatDate}schedules`,
+                item: this.newItem,
+                isPassed:false
+            };
+        this.schedules = JSON.parse(localStorage.getItem(`${this.customformat(this.date)}schedules`)) || [];
+          this.schedules.push(schedule);
+            this.newItem = '';
+            this.closeModal();
+          console.log(this.schedules )
         },
         deleteSchedule: function(index){
             this.schedules.splice(index,1);

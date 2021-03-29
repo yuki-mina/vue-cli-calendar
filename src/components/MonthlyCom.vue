@@ -55,7 +55,7 @@ export default {
                 localStorage.setItem(`${this.thisMonth.id}schedules`,JSON.stringify(this.schedules));
             }
         },
-        weekId:{
+        monthId:{
             handler: function(){
                 this.schedules = JSON.parse(localStorage.getItem(`${this.thisMonth.id}schedules`)) || [];
             }
@@ -65,7 +65,7 @@ export default {
         this.schedules = JSON.parse(localStorage.getItem(`${this.thisMonth.id}schedules`)) || [];
     },
     computed:{
-        weekId(){
+        monthId(){
             return this.thisMonth.id;
         }
     },
