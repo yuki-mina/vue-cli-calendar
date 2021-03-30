@@ -1,5 +1,5 @@
 <template>
-  <div class="monthly-page">
+  <section class="monthly-page">
    <Modal class = "add-schedule" v-on:close="closeModal" v-if="modal">
      <p>new schedule</p>
       <template slot="footer">
@@ -34,7 +34,7 @@
     <div class = "week" v-for="(week, index) in getThisMonth" :key="index">
       <monthly-com class = "day" v-for="(day,index) in week" :key="index" :thisMonth="day"/>
     </div>
-  </div>
+  </section>
 </template>
 
 <script>
@@ -145,7 +145,6 @@ export default {
           this.schedules.push(schedule);
             this.newItem = '';
             this.closeModal();
-          console.log(this.schedules )
         },
         deleteSchedule: function(index){
             this.schedules.splice(index,1);

@@ -1,8 +1,8 @@
 <template>
   <div id="app">
     <div id="nav">
-      <router-link to="/weekly">WeeklyPage</router-link> |
-      <router-link to="/monthly">MonthlyPage</router-link>
+      <!-- <router-link to="/weekly">WeeklyPage</router-link> |
+      <router-link to="/monthly">MonthlyPage</router-link> -->
     </div>
     <router-view/>
   </div>
@@ -15,6 +15,7 @@
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+  background: rgba(3, 45, 109, 0.8);
 }
 
 #nav {

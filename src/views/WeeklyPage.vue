@@ -1,5 +1,5 @@
 <template>
-  <div class="weekly-page row">
+  <section class="weekly-page row">
     <div class="prev" v-on:click="prevWeek">&laquo;</div>
     <div class="next" v-on:click="nextWeek">&raquo;</div>
     <div class="weekly-title">
@@ -13,7 +13,7 @@
     <weekly-com :thisWeek="getThisWeek[4]"/>
     <weekly-com :thisWeek="getThisWeek[5]"/>
     <weekly-com :thisWeek="getThisWeek[6]"/>
-  </div>
+  </section>
 </template>
 
 <script>
