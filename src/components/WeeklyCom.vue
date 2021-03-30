@@ -1,5 +1,5 @@
 <template>
-    <div id="weekly-com" class="weekly-com">
+    <section id="weekly-com" class="weekly-com">
         <Modal v-on:close="closeModal" v-if="modal">
             <p>Todo or Schedule</p>
             <template slot="footer">
@@ -20,7 +20,7 @@
                 <button class="add-todo btn" v-on:click="addList">Todo</button>
             </div>
             </form>
-            </div>
+        </div>
         <!-- <hr class="top-line">  -->
         <ul class="ul-schedule">
             <draggable :options="options">
@@ -49,7 +49,7 @@
                 </li>
             </draggable>
         </ul>
-    </div>
+    </section>
 </template>
 
 <script>
@@ -156,210 +156,174 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .weekly-com{
     display:inline-block;
     border-right: 0.5px solid rgba(0, 9, 22, 0.5);
     border-bottom: 0.5px solid rgba(0, 9, 22, 0.5);
     width:320px;
     height:350px;
-}
-.header-color{
-    position:relative;
-    left:-12px;
-    background:rgba(140, 181, 241, 0.3);
-    width: 320px;
-    height: 80px;
-    margin: 0;
-}
-.day{
-    font-size: 15px;
-}
-form{
-    height:36px;
-}
-ul.ul-todo {
-    list-style: none;
-    text-align: left;
-    padding:0;
-    margin:0;
-    height:130px;
-    position:relative;
-    top:6px;
-}
-ul.ul-schedule{
-    list-style: none;
-    text-align: left;
-    padding:0;
-    margin:0;
-    height:128px;
-    position:relative;
-    top:10px;
-}
-li{
-    height:17px;
-    position:relative;
-    margin-bottom:2px;
-}
-label{
-    height:15px;
-    line-height:15px;
-    font-family: none;
-    margin-left:5px;
-    font-size: 16px;
-    padding:0 5px 0 2px;
+    .header-color{
+        position:relative;
+        left:-12px;
+        background:rgba(140, 181, 241, 0.3);
+        width: 320px;
+        height: 80px;
+        margin: 0;
+        span.day{
+            font-size: 15px;
+        }
+    }
+    form{
+        height:36px;
+    }
+    ul{
+        &.ul-todo {
+            list-style: none;
+            text-align: left;
+            padding:0;
+            margin:0;
+            height:130px;
+            position:relative;
+            top:6px;
+            label{
+                background: linear-gradient(transparent 20%, #f3dd9c 20%);
+                &.done{
+                    font-size: 16px;
+                    text-decoration: line-through;
+                    text-decoration-color:#adacad;
+                    text-decoration-thickness: 1px;
+                    color:#adacad;
+                    background: none;
+                }
+                span{
+                    position:relative;
+                    top:-2px;
+                }
+            }
+            input[type="checkbox"] + label:before {
+                content: '';
+                display: block;
+                width: 15px;
+                height: 15px;
+                border: 1px solid #101111;
+                display: inline-block;
+                margin-right:8px;
+                opacity: .6;
+                -webkit-transition: all .12s, border-color .08s;
+                transition: all .12s, border-color .08s;        
+            }
+            input[type="checkbox"]:checked + label:before {
+                width: 5px;
+                border-radius: 0;
+                opacity: 1;
+                border-top-color: transparent;
+                border-left-color: transparent;
+                border-bottom-color: #adacad;
+                border-right-color: #adacad;
+                -webkit-transform: rotate(45deg);
+                transform: rotate(45deg);
+                margin-right:18px;
+            }
+        }
+        &.ul-schedule{
+            list-style: none;
+            text-align: left;
+            padding:0;
+            margin:0;
+            height:128px;
+            position:relative;
+            top:10px;
+            label{
+                background: linear-gradient(transparent 20%, rgb(13, 106, 245,0.3) 20%);
+            }
+        }
+        li{
+            height:17px;
+            position:relative;
+            margin-bottom:2px;
+        }
+    }
 
-}
-ul.ul-todo label span{
-    position:relative;
-    top:-2px;
-}
-ul.ul-todo label{
-    background: linear-gradient(transparent 20%, #f3dd9c 20%);
-}
-ul.ul-schedule label{
-    background: linear-gradient(transparent 20%, rgb(13, 106, 245,0.3) 20%);
-}
-ul.ul-todo label.done{
-    font-size: 16px;
-    text-decoration: line-through;
-    text-decoration-color:#adacad;
-    text-decoration-thickness: 1px;
-    color:#adacad;
-    background: none;
-}
-/* ul.ul-schedule label.passed{
-    font-size: 13px;
-    text-decoration: line-through;
-    text-decoration-color:#adacad;
-    text-decoration-thickness: 1px;
-    color:#adacad;
-    background: none;
-} */
-input[type="text"]{
-    width:70%;
-    height:20px;
-}
-input[type=checkbox]{
-    display:none;
-}
-ul.ul-todo input[type="checkbox"] + label:before {
-  content: '';
-  display: block;
-  width: 15px;
-  height: 15px;
-  border: 1px solid #101111;
-  display: inline-block;
-  margin-right:8px;
-  opacity: .6;
-  -webkit-transition: all .12s, border-color .08s;
-  transition: all .12s, border-color .08s;
-}
-/* ul.ul-schedule input[type="checkbox"] + label:before {
-  content: '';
-  display: block;
-  width: 15px;
-  height: 15px;
-  border: 1px solid #101111;
-  border-radius: 50%;
-  display: inline-block;
-  margin-right:8px;
-  opacity: .6;
-  -webkit-transition: all .12s, border-color .08s;
-  transition: all .12s, border-color .08s;
-  background: rgb(13, 106, 245, 0.8);
+    label{
+        height:15px;
+        line-height:15px;
+        font-family: none;
+        margin-left:5px;
+        font-size: 16px;
+        padding:0 5px 0 2px;
 
-} */
+    }
+    input{
+        &[type=text]{
+            width:70%;
+            height:20px;
+            background: #fff;
+            border: 1px solid #adacad;
+        }
+        &[type=checkbox]{
+            display:none;
+        }
+    }
 
-ul.ul-todo input[type="checkbox"]:checked + label:before {
-  width: 5px;
-  border-radius: 0;
-  opacity: 1;
-  border-top-color: transparent;
-  border-left-color: transparent;
-  border-bottom-color: #adacad;
-  border-right-color: #adacad;
-  -webkit-transform: rotate(45deg);
-  transform: rotate(45deg);
-  margin-right:18px;
+    button{
+        margin-left:5px;
+        outline: none;
+        &.del-todo{
+            opacity: 0;
+            border:none;
+            background:#fff;
+            margin:0 0 0 3px;
+            padding:0;
+        }
+        &.del-schedule{
+            opacity: 0;
+            border:none;
+            background:#fff;
+            margin:0 0 0 3px;
+            padding:0;
+        }
+        &.add-schedule,
+        &.modal-add-schedule{
+            height:18px;
+            line-height: 0;
+            background: rgb(13, 106, 245, 0.8);
+            color: #fff;
+            &:hover{
+                background: rgb(13, 106, 245);
+            }
+        }
+        &.add-todo,
+        &.modal-add-todo{
+            height:18px;
+            line-height: 0;
+            background: rgb(13, 106, 245, 0.8);
+            color: #fff;
+            &:hover{
+                background: rgb(13, 106, 245);
+            }
+        }
+        &.modal-add-schedule,
+        &.modal-add-todo{
+            height:36px;
+        }
+    }
+    span:hover button.del-todo,
+    span:hover button.del-schedule{
+        opacity:1;
+        -webkit-transition:	all 0.2s ease;
+        transition:		all 0.2s ease;
+    }
+    .fa-times{
+        color:rgb(209, 179, 179);
+    }
+    hr{
+        margin:8px 0;
+        &.center-line{
+            position:relative;
+            /* top:5px; */
+            margin:4px 0;
+        }
+    }
 }
-/* ul.ul-schedule input[type="checkbox"]:checked + label:before { */
-  /* width: 5px;
-  border-radius: 0;
-  opacity: 1;
-  border-top-color: transparent;
-  border-left-color: transparent;
-  border-bottom-color: #adacad;
-  border-right-color: #adacad;
-  -webkit-transform: rotate(45deg);
-  transform: rotate(45deg); */
-  /* border: 1px solid #3f3e3e;
-  background: #ee2222;
-} */
-button.del-todo{
-    opacity: 0;
-    border:none;
-    background:#fff;
-    margin:0 0 0 3px;
-    padding:0;
-}
-button.del-schedule{
-    opacity: 0;
-    border:none;
-    background:#fff;
-    margin:0 0 0 3px;
-    padding:0;
-}
-span:hover button.del-todo,
-span:hover button.del-schedule{
-    opacity:1;
-    -webkit-transition:	all 0.2s ease;
-	transition:		all 0.2s ease;
-}
-button.add-schedule,
-button.modal-add-schedule{
-    height:18px;
-    line-height: 0;
-    background: rgb(13, 106, 245, 0.8);
-    color: #fff;
-}
-button.add-todo,
-button.modal-add-todo{
-    height:18px;
-    line-height: 0;
-    background: rgb(13, 106, 245, 0.8);
-    color: #fff;
-}
-button.add-schedule:hover,
-button.modal-add-schedule:hover{
-    background: rgb(13, 106, 245);
-}
-button.add-todo:hover,
-button.modal-add-todo:hover{
-    background: rgb(13, 106, 245);
-}
-button.modal-add-schedule,
-button.modal-add-todo{
-    height:36px;
-}
-button{
-   margin-left:5px;
-   outline: none;
-}
-.fa-times{
-    color:rgb(209, 179, 179);
-}
-hr{
-    margin:8px 0;
-}
-hr.center-line{
-    position:relative;
-    /* top:5px; */
-    margin:4px 0;
-}
-/* hr.top-line{
-    position:relative;
-    top:10px;
-    margin:4px 0;
-} */
 </style>

@@ -158,7 +158,7 @@ export default {
   },
 }
 </script>
-<style scoped>
+<style scoped >
 .monthly-page{
   width:100%;
   margin:auto;
@@ -237,6 +237,10 @@ button.add-schedule{
 .schedule-content input{
   display: block;
   margin-left:5px;
+  background-color:#fff;
+}
+.datepicker >>> input {
+  background-color:#fff;
 }
 .clearfix::after {
    content: "";
